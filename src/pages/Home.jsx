@@ -23,12 +23,11 @@ export default function Home() {
     deleteNote,
   } = useNotes()
 
-  // Draft/save flow (no autosave while typing)
   const [mode, setMode] = useState("none") // none | new | edit
   const [editingId, setEditingId] = useState(null)
   const [draft, setDraft] = useState({ title: "", content: "" })
 
-  // Delete flow UI state
+  // Delete flow 
   const [pendingDeleteId, setPendingDeleteId] = useState(null)
   const [toast, setToast] = useState({ open: false, message: "", duration: 1800 })
 

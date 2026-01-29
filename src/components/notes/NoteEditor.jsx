@@ -5,6 +5,8 @@ export default function NoteEditor({
   onDiscard,
   saveDisabled,
 }) {
+
+  // Notes Editor Component 
   return (
     <div className="editor-card">
       <input

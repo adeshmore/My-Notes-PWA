@@ -7,6 +7,11 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      workbox: {
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+        skipWaiting: true,
+      },
       includeAssets: ['icons/pwa-192x192.png', 'icons/pwa-512x512.png'],
       manifest: {
         name: 'Offline Notes PWA',

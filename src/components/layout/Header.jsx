@@ -1,6 +1,6 @@
 export default function Header({ title, query, setQuery }) {
   return (
-    // Search bar in header
+    // Search bar in header seearching notes by title or content
     <div className="topbar">
       <div />
       <h1>{title}</h1>

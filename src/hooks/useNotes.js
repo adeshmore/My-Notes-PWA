@@ -1,15 +1,25 @@
 import { useEffect, useMemo, useState } from 'react'
-import { loadNotes, saveNotes } from '../services/notesStorage'
+import { deleteNote as deleteNoteFromDb, getAllNotes, putNote } from '../services/notesDb'
 
 export function useNotes() {
-  const [notes, setNotes] = useState(() => loadNotes())
-  const [activeId, setActiveId] = useState(() => (loadNotes()[0]?.id ?? null))
+  const [notes, setNotes] = useState([])
+  const [activeId, setActiveId] = useState(null)
   const [query, setQuery] = useState('')
 
-  // Persist whenever notes change
   useEffect(() => {
-    saveNotes(notes)
-  }, [notes])
+    let cancelled = false
+
+    ;(async () => {
+      const loaded = await getAllNotes()
+      if (cancelled) return
+      setNotes(Array.isArray(loaded) ? loaded : [])
+      setActiveId((loaded?.[0]?.id ?? null) || null)
+    })()
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   const filteredNotes = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -43,19 +53,32 @@ export function useNotes() {
 
     setNotes(prev => [newNote, ...prev])
     if (select) setActiveId(newNote.id)
+
+    putNote(newNote).catch((e) => console.error('Failed to save note', e))
     return newNote.id
   }
 
   function updateNote(id, patch) {
     const now = Date.now()
-    setNotes(prev =>
-      prev.map(n => (n.id === id ? { ...n, ...patch, updatedAt: now } : n))
-    )
+    let updated = null
+    setNotes(prev => {
+      const next = prev.map(n => {
+        if (n.id !== id) return n
+        updated = { ...n, ...patch, updatedAt: now }
+        return updated
+      })
+      return next
+    })
+
+    if (updated) {
+      putNote(updated).catch((e) => console.error('Failed to save note', e))
+    }
   }
 
   function deleteNote(id) {
     setNotes(prev => prev.filter(n => n.id !== id))
     setActiveId(prevActive => (prevActive === id ? null : prevActive))
+    deleteNoteFromDb(id).catch((e) => console.error('Failed to delete note', e))
   }
 
   return {

@@ -11,6 +11,8 @@ export default function NotesList({
   onRequestEdit,
   onToggleFavorite,
 }) {
+
+  // Notes List componet - displaying also favorite status and edit/delete buttons
   if (!notes.length) {
     const q = query.trim()
     if (hasAnyNotes && q) {
@@ -23,7 +25,7 @@ export default function NotesList({
         </div>
       )
     }
-
+   
     return (
       <div className="sidebar-empty">
         <div className="sidebar-empty-title">No notes yet</div>

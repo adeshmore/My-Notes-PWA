@@ -7,6 +7,38 @@
   text-align: initial;
 }
 
+/* Floating offline banner (no layout shift) */
+.offline-banner {
+  position: fixed;
+  left: 50%;
+  bottom: 16px; /* Adjust this value as needed */
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(92vw, 520px);
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255, 251, 235, 0.98);
+  color: #7a4c00;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.14),
+    0 2px 10px rgba(0, 0, 0, 0.08);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.offline-banner__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  flex: none;
+  background: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.22);
+}
+
 /* Layout closer to the screenshot */
 .notes-shell {
   height: 100%;
